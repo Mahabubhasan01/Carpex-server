@@ -39,7 +39,8 @@ async function run(){
         const engineCollection = client.db('carpaex').collection('engine');
         const oilCollection = client.db('carpaex').collection('oil');
         const tyersCollection = client.db('carpaex').collection('tyers');
-        const reviewCollection = client.db('carpaex').collection('review')
+        const reviewCollection = client.db('carpaex').collection('review');
+        const ordersCollection = client.db('carpaex').collection('orders')
 
         // only six parts collection 
 
@@ -93,11 +94,17 @@ async function run(){
             const result = await reviewCollection.findOne(query);
             res.send(result)
         })
+        // add order by single user 
+        app.post('/order',async(req,res)=>{
+            const data = req.body;
+            const result = await ordersCollection.insertOne(data);
+            res.send(result)
+        })
 
         app.get('/',async(req,res)=>{
             console.log('test');
             req.send('ok done')
-        })
+        });
 
 
         
