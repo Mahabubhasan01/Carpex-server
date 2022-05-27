@@ -85,6 +85,13 @@ async function run(){
             const data = req.body;
             const result = await reviewCollection.insertOne(data);
             res.send(result)
+        });
+        // get review by params as a email 
+        app.get('/review/:email',async(req,res)=>{
+            const email = req.params.email;
+            const query = {email:email};
+            const result = await reviewCollection.findOne(query);
+            res.send(result)
         })
 
         app.get('/',async(req,res)=>{
