@@ -99,6 +99,13 @@ async function run(){
             const data = req.body;
             const result = await ordersCollection.insertOne(data);
             res.send(result)
+        });
+        // get orders admin or current user
+        app.get('/order/:email',async(req,res) =>{
+            const userEmail = req.params.email;
+            const query = {email:userEmail};
+            const result = await ordersCollection.findOne(query);
+            res.send(result)
         })
 
         app.get('/',async(req,res)=>{
