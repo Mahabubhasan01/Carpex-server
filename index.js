@@ -71,10 +71,18 @@ async function run() {
         res.send(result);
       }
     });
-    app.post("/users", async (req, res) => {
+    app.put("/user/:email", async (req, res) => {
+      const email = req.params.email;
       const data = req.body;
-      const result = await userCollection.insertOne(data);
-      res.send(result);
+      const filter = {email:email}
+      const options = {upsert:true}
+      const updatedoc={
+        $set:data
+      }
+      const result = await userCollection.updateOne(filter,options,updatedoc);
+      const token = jwt.sign({email:email},process.env.TOKEN);
+      
+      res.send({result,token});
     });
 
     // Get engine item
