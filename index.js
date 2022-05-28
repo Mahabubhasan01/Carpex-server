@@ -39,7 +39,7 @@ async function run(){
         const engineCollection = client.db('carpaex').collection('engine');
         const oilCollection = client.db('carpaex').collection('oil');
         const tyersCollection = client.db('carpaex').collection('tyers');
-        const reviewCollection = client.db('carpaex').collection('review');
+        const reviewCollection = client.db('carpaex').collection('reviews');
         const ordersCollection = client.db('carpaex').collection('orders')
 
         // only six parts collection 
@@ -57,7 +57,13 @@ async function run(){
             const result = await partsCollection.findOne(query);
             res.send(result);
         })
-
+        // delete parts item by admin 
+        app.delete('/parts/admin/:email',async(req,res)=>{
+            const email = req.params.email;
+            const query = {email:email};
+            const result = await partsCollection.deleteOne(query);
+            res.send(result)
+        })
 
         // Get engine item 
 
@@ -75,7 +81,7 @@ async function run(){
         });
         // Get tyers item 
 
-        app.get('/tyers',async(req,res)=>{
+        app.get('/tyers',verifyJWT, async(req,res)=>{
             const cursor = tyersCollection.find({});
             const result = await cursor.toArray();
             res.send(result)
@@ -88,10 +94,10 @@ async function run(){
             res.send(result)
         });
         // get review by params as a email 
-        app.get('/review/:email',async(req,res)=>{
+        app.get('/review',async(req,res)=>{
             const email = req.params.email;
             const query = {email:email};
-            const result = await reviewCollection.findOne(query);
+            const result = await reviewCollection.find(query);
             res.send(result)
         })
         // add order by single user 
@@ -101,10 +107,10 @@ async function run(){
             res.send(result)
         });
         // get orders admin or current user
-        app.get('/order/:email',async(req,res) =>{
+        app.get('/order',async(req,res) =>{
             const userEmail = req.params.email;
             const query = {email:userEmail};
-            const result = await ordersCollection.findOne(query);
+            const result = await ordersCollection.find(query);
             res.send(result)
         })
 
