@@ -40,7 +40,8 @@ async function run(){
         const oilCollection = client.db('carpaex').collection('oil');
         const tyersCollection = client.db('carpaex').collection('tyers');
         const reviewCollection = client.db('carpaex').collection('reviews');
-        const ordersCollection = client.db('carpaex').collection('orders')
+        const ordersCollection = client.db('carpaex').collection('orders');
+        const userCollection = client.db('carpaex').collection('users')
 
         // only six parts collection 
 
@@ -61,9 +62,18 @@ async function run(){
         app.delete('/parts/admin/:email',async(req,res)=>{
             const email = req.params.email;
             const query = {email:email};
-            const result = await partsCollection.deleteOne(query);
+            const user = await userCollection.findOne(query)
+            if(user.role==='admin'){
+                const result = await partsCollection.deleteOne(query);
+                res.send(result)
+            }
+        });
+        app.post('/users',async(req,res) =>{
+            const data = req.body;
+            const result = await userCollection.insertOne(data);
             res.send(result)
         })
+        
 
         // Get engine item 
 
