@@ -114,10 +114,10 @@ async function run() {
       res.send(result);
     });
     // get review by params as a email
-    app.get("/review", async (req, res) => {
+    app.get("/review/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
-      const result = await reviewCollection.find(query);
+      const result = await reviewCollection.find(query).toArray();
       res.send(result);
     });
     // add order by single user
@@ -127,12 +127,17 @@ async function run() {
       res.send(result);
     });
     // get orders admin or current user
-    app.get("/order", async (req, res) => {
+    app.get("/order/:email", async (req, res) => {
       const userEmail = req.params.email;
       const query = { email: userEmail };
       const result = await ordersCollection.find(query).toArray();
       res.send(result);
     });
+    app.get('/order',async(req,res)=>{
+      const cursor = ordersCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result)
+    })
 
     app.get("/", async (req, res) => {
       console.log("test");
