@@ -76,10 +76,10 @@ async function run() {
       const data = req.body;
       const filter = {email:email}
       const options = {upsert:true}
-      const updatedoc={
+      const updateDoc={
         $set:data
       }
-      const result = await userCollection.updateOne(filter,options,updatedoc);
+      const result = await userCollection.updateOne(filter,options,updateDoc);
       const token = jwt.sign({email:email},process.env.TOKEN);
       
       res.send({result,token});
