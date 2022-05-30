@@ -139,6 +139,12 @@ async function run() {
       const result = await userCollection.find(query).toArray();
       res.send(result);
     });
+    app.get("/review/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      const query = { email: userEmail };
+      const result = await reviewCollection.find(query).toArray();
+      res.send(result);
+    });
     app.delete('/order/:id',async(req,res) =>{
       const id = req.params.id;
       const query = {_id:ObjectId(id)};
