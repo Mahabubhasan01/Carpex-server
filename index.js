@@ -170,6 +170,8 @@ async function run() {
       res.send(result)
     });
     // get user 
+
+    
     app.get('/user',async(req,res)=>{
       const cursor = userCollection.find({});
       const result = await cursor.toArray();
