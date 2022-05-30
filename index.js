@@ -133,11 +133,33 @@ async function run() {
       const result = await ordersCollection.find(query).toArray();
       res.send(result);
     });
+    app.get("/user/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      const query = { email: userEmail };
+      const result = await userCollection.find(query).toArray();
+      res.send(result);
+    });
+    app.delete('/order/:id',async(req,res) =>{
+      const id = req.params.id;
+      const query = {_id:ObjectId(id)};
+      const deleteProduct = await ordersCollection.deleteOne(query);
+      res.send(deleteProduct);
+    })
     app.get('/order',async(req,res)=>{
       const cursor = ordersCollection.find({});
       const result = await cursor.toArray();
       res.send(result)
-    })
+    });
+    app.get('/user',async(req,res)=>{
+      const cursor = userCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result)
+    });
+    app.get('/review',async(req,res)=>{
+      const cursor = reviewCollection.find({});
+      const result = await cursor.toArray();
+      res.send(result)
+    });
 
     app.get("/", async (req, res) => {
       console.log("test");
